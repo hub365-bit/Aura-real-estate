@@ -317,4 +317,151 @@ class MockDatabase {
   }
 }
 
-export const db = new MockDatabase();
+const mockDbInstance = new MockDatabase();
+
+export const db = mockDbInstance;
+
+export const mockDb = {
+  users: {
+    findById: async (id: string) => mockDbInstance.getUser(id) || null,
+    findByEmail: async (email: string) => mockDbInstance.getUserByEmail(email) || null,
+    findByPhone: async (phone: string) => mockDbInstance.getUsers().find(u => u.phone === phone) || null,
+    create: async (data: any) => {
+      const user = { ...data, id: `user-${Date.now()}`, createdAt: new Date(), updatedAt: new Date() };
+      return mockDbInstance.createUser(user);
+    },
+    update: async (id: string, data: any) => mockDbInstance.updateUser(id, data)!,
+    delete: async (id: string) => { mockDbInstance.getUsers().filter(u => u.id !== id); },
+    list: async (filters?: any) => mockDbInstance.getUsers(),
+  },
+  properties: {
+    findById: async (id: string) => mockDbInstance.getProperty(id) || null,
+    create: async (data: any) => {
+      const property = { ...data, id: `prop-${Date.now()}`, createdAt: new Date(), updatedAt: new Date() };
+      return mockDbInstance.createProperty(property);
+    },
+    update: async (id: string, data: any) => mockDbInstance.updateProperty(id, data)!,
+    delete: async (id: string) => { mockDbInstance.deleteProperty(id); },
+    list: async (filters?: any) => mockDbInstance.getProperties(filters),
+    incrementViews: async (id: string) => {
+      const prop = mockDbInstance.getProperty(id);
+      if (prop) mockDbInstance.updateProperty(id, { views: prop.views + 1 });
+    },
+    incrementSaves: async (id: string) => {
+      const prop = mockDbInstance.getProperty(id);
+      if (prop) mockDbInstance.updateProperty(id, { saves: prop.saves + 1 });
+    },
+    incrementLeads: async (id: string) => {
+      const prop = mockDbInstance.getProperty(id);
+      if (prop) mockDbInstance.updateProperty(id, { leads: prop.leads + 1 });
+    },
+  },
+  bookings: {
+    findById: async (id: string) => mockDbInstance.getBooking(id) || null,
+    create: async (data: any) => {
+      const booking = { ...data, id: `booking-${Date.now()}`, createdAt: new Date(), updatedAt: new Date() };
+      return mockDbInstance.createBooking(booking);
+    },
+    update: async (id: string, data: any) => mockDbInstance.updateBooking(id, data)!,
+    list: async (filters?: any) => mockDbInstance.getBookings(filters?.userId),
+  },
+  tickets: {
+    findById: async (id: string) => mockDbInstance.getTicket(id) || null,
+    create: async (data: any) => {
+      const ticket = { ...data, id: `ticket-${Date.now()}`, createdAt: new Date(), updatedAt: new Date() };
+      return mockDbInstance.createTicket(ticket);
+    },
+    update: async (id: string, data: any) => mockDbInstance.updateTicket(id, data)!,
+    list: async (filters?: any) => mockDbInstance.getTickets(filters),
+  },
+  subscriptions: {
+    findById: async (id: string) => mockDbInstance.getSubscriptions().find(s => s.id === id) || null,
+    findActiveByUserId: async (userId: string) => mockDbInstance.getSubscriptions(userId).find(s => s.active) || null,
+    create: async (data: any) => {
+      const subscription = { ...data, id: `sub-${Date.now()}`, createdAt: new Date() };
+      return mockDbInstance.createSubscription(subscription);
+    },
+    update: async (id: string, data: any) => {
+      const sub = mockDbInstance.getSubscriptions().find(s => s.id === id);
+      return sub ? { ...sub, ...data } : sub!;
+    },
+    list: async (filters?: any) => mockDbInstance.getSubscriptions(filters?.userId),
+  },
+  notifications: {
+    create: async (data: any) => {
+      const notification = { ...data, id: `notif-${Date.now()}`, createdAt: new Date() };
+      return mockDbInstance.createNotification(notification);
+    },
+    list: async (userId: string, filters?: any) => mockDbInstance.getNotifications(userId, filters?.read === false),
+    markRead: async (id: string) => { mockDbInstance.markNotificationRead(id); },
+    markAllRead: async (userId: string) => {
+      mockDbInstance.getNotifications(userId).forEach(n => mockDbInstance.markNotificationRead(n.id));
+    },
+  },
+  posts: {
+    findById: async (id: string) => mockDbInstance.getPosts().find(p => p.id === id) || null,
+    create: async (data: any) => {
+      const post = { ...data, id: `post-${Date.now()}`, createdAt: new Date(), updatedAt: new Date() };
+      return mockDbInstance.createPost(post);
+    },
+    update: async (id: string, data: any) => {
+      const post = mockDbInstance.getPosts().find(p => p.id === id);
+      return post ? { ...post, ...data, updatedAt: new Date() } : post!;
+    },
+    delete: async (id: string) => {},
+    list: async (filters?: any) => mockDbInstance.getPosts(filters),
+    incrementLikes: async (id: string) => {},
+    incrementComments: async (id: string) => {},
+  },
+  businesses: {
+    findById: async (id: string) => mockDbInstance.getBusiness(id) || null,
+    create: async (data: any) => {
+      const business = { ...data, id: `biz-${Date.now()}`, createdAt: new Date(), updatedAt: new Date() };
+      return mockDbInstance.createBusiness(business);
+    },
+    update: async (id: string, data: any) => {
+      const biz = mockDbInstance.getBusiness(id);
+      return biz ? { ...biz, ...data, updatedAt: new Date() } : biz!;
+    },
+    list: async (filters?: any) => mockDbInstance.getBusinesses(filters?.userId),
+    incrementFollowers: async (id: string) => {},
+    decrementFollowers: async (id: string) => {},
+  },
+  reviews: {
+    findById: async (id: string) => mockDbInstance.getReviews().find(r => r.id === id) || null,
+    create: async (data: any) => {
+      const review = { ...data, id: `review-${Date.now()}`, createdAt: new Date() };
+      return mockDbInstance.createReview(review);
+    },
+    list: async (filters?: any) => mockDbInstance.getReviews(filters),
+    incrementHelpful: async (id: string) => {},
+  },
+  payments: {
+    findById: async (id: string) => mockDbInstance.getPayments().find(p => p.id === id) || null,
+    create: async (data: any) => {
+      const payment = { ...data, id: `payment-${Date.now()}`, createdAt: new Date() };
+      return mockDbInstance.createPayment(payment);
+    },
+    update: async (id: string, data: any) => {
+      const payment = mockDbInstance.getPayments().find(p => p.id === id);
+      return payment ? { ...payment, ...data } : payment!;
+    },
+    list: async (filters?: any) => mockDbInstance.getPayments(filters?.userId),
+  },
+  messages: {
+    findById: async (id: string) => mockDbInstance.getMessages('').find(m => m.id === id) || null,
+    create: async (data: any) => {
+      const message = { ...data, id: `msg-${Date.now()}`, createdAt: new Date() };
+      return mockDbInstance.createMessage(message);
+    },
+    list: async (filters: any) => mockDbInstance.getMessages(filters.senderId || filters.receiverId || ''),
+    markRead: async (id: string) => {},
+  },
+  analytics: {
+    getUserAnalytics: async (userId: string, startDate: Date, endDate: Date) => mockDbInstance.getAnalytics(userId, startDate, endDate),
+    recordView: async (userId: string) => {},
+    recordClick: async (userId: string) => {},
+    recordBooking: async (userId: string, revenue: number) => {},
+    recordLead: async (userId: string) => {},
+  },
+};
