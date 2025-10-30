@@ -127,8 +127,8 @@ export async function createDatabase(): Promise<Database> {
   
   if (!dbUrl) {
     console.warn("⚠️  DATABASE_URL not set - using mock database");
-    const { mockDb } = await import("../db/mock-db");
-    return mockDb;
+    const mockDbModule = await import("../db/mock-db");
+    return mockDbModule.mockDb;
   }
   
   console.log("🔌 Connecting to production database...");
