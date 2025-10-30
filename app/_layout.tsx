@@ -6,6 +6,9 @@ import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider } from "@/contexts/AppContext";
 import { trpc, trpcClient } from "@/lib/trpc";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { logger } from "@/lib/logger";
+import { validateConfig } from "@/lib/config";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -52,18 +55,27 @@ function RootLayoutNav() {
 export default function RootLayout() {
   useEffect(() => {
     SplashScreen.hideAsync();
+    
+    try {
+      validateConfig();
+      logger.info("App initialized successfully");
+    } catch (error) {
+      logger.error("Configuration validation failed", error);
+    }
   }, []);
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <GestureHandlerRootView style={styles.container}>
-          <AppProvider>
-            <RootLayoutNav />
-          </AppProvider>
-        </GestureHandlerRootView>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <ErrorBoundary>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <GestureHandlerRootView style={styles.container}>
+            <AppProvider>
+              <RootLayoutNav />
+            </AppProvider>
+          </GestureHandlerRootView>
+        </QueryClientProvider>
+      </trpc.Provider>
+    </ErrorBoundary>
   );
 }
 

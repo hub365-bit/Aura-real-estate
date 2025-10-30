@@ -321,7 +321,7 @@ const mockDbInstance = new MockDatabase();
 
 export const db = mockDbInstance;
 
-export const mockDb = {
+export default {
   users: {
     findById: async (id: string) => mockDbInstance.getUser(id) || null,
     findByEmail: async (email: string) => mockDbInstance.getUserByEmail(email) || null,
