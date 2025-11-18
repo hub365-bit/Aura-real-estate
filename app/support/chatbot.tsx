@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { ArrowLeft, Send, Bot, User } from 'lucide-react-native';
 import { colors } from '@/constants/colors';
-import { useRorkAgent, createRorkTool } from '@rork/toolkit-sdk';
+import { useRorkAgent, createRorkTool } from '@rork-ai/toolkit-sdk';
 import { z } from 'zod';
 
 export default function Chatbot() {

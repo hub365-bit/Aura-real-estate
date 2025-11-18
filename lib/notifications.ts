@@ -1,17 +1,29 @@
-import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+let Notifications: any = null;
+let Device: any = null;
+
+if (Platform.OS !== 'web') {
+  try {
+    Notifications = require('expo-notifications');
+    Device = require('expo-device');
+    
+    if (Notifications?.setNotificationHandler) {
+      Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+          shouldShowAlert: true,
+          shouldPlaySound: true,
+          shouldSetBadge: true,
+          shouldShowBanner: true,
+          shouldShowList: true,
+        }),
+      });
+    }
+  } catch (error) {
+    console.log('expo-notifications not available in Expo Go (SDK 53+). Use development build for push notifications.');
+  }
+}
 
 export type NotificationType = 
   | 'booking_confirmed'
@@ -34,6 +46,11 @@ export interface NotificationPayload {
 }
 
 export async function registerForPushNotificationsAsync(): Promise<string | undefined> {
+  if (!Notifications || !Device) {
+    console.log('Push notifications require a development build (not available in Expo Go SDK 53+)');
+    return undefined;
+  }
+
   let token;
 
   if (Platform.OS === 'android') {
@@ -84,8 +101,13 @@ export async function registerForPushNotificationsAsync(): Promise<string | unde
 
 export async function schedulePushNotification(
   notification: NotificationPayload,
-  trigger?: Notifications.NotificationTriggerInput
+  trigger?: any
 ): Promise<string> {
+  if (!Notifications) {
+    console.log('Push notifications require a development build');
+    return 'mock-notification-id';
+  }
+  
   return await Notifications.scheduleNotificationAsync({
     content: {
       title: notification.title,
@@ -121,7 +143,7 @@ export async function scheduleRentReminder(
       body: `Hi ${tenantName}, your rent of KSh ${amount.toLocaleString()} is due on ${dueDate.toLocaleDateString()}`,
       data: { amount, dueDate: dueDate.toISOString() },
     },
-    { date: threeDaysBefore } as Notifications.DateTriggerInput
+    { date: threeDaysBefore }
   );
 }
 
@@ -139,7 +161,7 @@ export async function scheduleSubscriptionExpiryReminder(
       body: `Your ${subscriptionType} subscription expires on ${expiryDate.toLocaleDateString()}. Renew to continue enjoying premium features.`,
       data: { subscriptionType, expiryDate: expiryDate.toISOString() },
     },
-    { date: twoDaysBefore } as Notifications.DateTriggerInput
+    { date: twoDaysBefore }
   );
 }
 
@@ -194,21 +216,29 @@ export async function notifyNewMessage(
 }
 
 export async function cancelAllScheduledNotifications(): Promise<void> {
+  if (!Notifications) return;
   await Notifications.cancelAllScheduledNotificationsAsync();
 }
 
 export async function cancelNotification(notificationId: string): Promise<void> {
+  if (!Notifications) return;
   await Notifications.cancelScheduledNotificationAsync(notificationId);
 }
 
 export function addNotificationReceivedListener(
-  listener: (notification: Notifications.Notification) => void
-): Notifications.Subscription {
+  listener: (notification: any) => void
+): any {
+  if (!Notifications) {
+    return { remove: () => {} };
+  }
   return Notifications.addNotificationReceivedListener(listener);
 }
 
 export function addNotificationResponseReceivedListener(
-  listener: (response: Notifications.NotificationResponse) => void
-): Notifications.Subscription {
+  listener: (response: any) => void
+): any {
+  if (!Notifications) {
+    return { remove: () => {} };
+  }
   return Notifications.addNotificationResponseReceivedListener(listener);
 }

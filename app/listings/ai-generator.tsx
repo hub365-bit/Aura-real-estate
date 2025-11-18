@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { ArrowLeft, Sparkles, Copy, CheckCircle } from 'lucide-react-native';
 import { colors } from '@/constants/colors';
-import { generateText } from '@rork/toolkit-sdk';
+import { generateText } from '@rork-ai/toolkit-sdk';
 
 interface GeneratedContent {
   title: string;

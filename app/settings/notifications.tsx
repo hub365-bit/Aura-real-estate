@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft, Bell, BellOff } from 'lucide-react-native';
-import * as Notifications from 'expo-notifications';
+import { ArrowLeft, Bell, BellOff, AlertCircle } from 'lucide-react-native';
 import { registerForPushNotificationsAsync } from '@/lib/notifications';
 import Colors from '@/constants/colors';
 
@@ -118,14 +117,34 @@ export default function NotificationSettingsScreen() {
   };
 
   const testNotification = async () => {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: 'Test Notification',
-        body: 'This is a test notification from Aura!',
-        data: { test: true },
-      },
-      trigger: null,
-    });
+    let Notifications: any = null;
+    
+    if (Platform.OS !== 'web') {
+      try {
+        Notifications = require('expo-notifications');
+      } catch (error) {
+        console.log('expo-notifications not available');
+      }
+    }
+    
+    if (!Notifications) {
+      alert('Push notifications require a development build. Not available in Expo Go (SDK 53+).');
+      return;
+    }
+    
+    try {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Test Notification',
+          body: 'This is a test notification from Aura!',
+          data: { test: true },
+        },
+        trigger: null,
+      });
+    } catch (error) {
+      console.error('Failed to send test notification:', error);
+      alert('Failed to send test notification. Make sure you have granted notification permissions.');
+    }
   };
 
   return (
@@ -144,6 +163,18 @@ export default function NotificationSettingsScreen() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {Platform.OS !== 'web' && !pushToken && (
+          <View style={styles.warningCard}>
+            <AlertCircle size={20} color={COLORS.primary} />
+            <View style={styles.warningText}>
+              <Text style={styles.warningTitle}>Development Build Required</Text>
+              <Text style={styles.warningSubtitle}>
+                Push notifications are not available in Expo Go (SDK 53+). Create a development build to enable this feature.
+              </Text>
+            </View>
+          </View>
+        )}
+        
         {pushToken ? (
           <View style={styles.statusCard}>
             <Bell size={24} color={COLORS.primary} />
@@ -360,5 +391,30 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: COLORS.dark,
     fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
+  },
+  warningCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF8E1',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#FFD54F',
+  },
+  warningText: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  warningTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: COLORS.dark,
+    marginBottom: 4,
+  },
+  warningSubtitle: {
+    fontSize: 12,
+    color: COLORS.textSecondary,
+    lineHeight: 18,
   },
 });
