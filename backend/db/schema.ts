@@ -7,6 +7,11 @@ export const ticketStatusSchema = z.enum(["open", "claimed", "in_progress", "res
 export const bookingStatusSchema = z.enum(["pending", "confirmed", "checked_in", "checked_out", "cancelled"]);
 export const subscriptionTierSchema = z.enum(["free", "weekly", "monthly", "yearly"]);
 export const notificationTypeSchema = z.enum(["booking", "payment", "ticket", "reward", "boost", "general"]);
+export const trustLevelSchema = z.enum(["verified", "building", "restricted"]);
+export const escrowStatusSchema = z.enum(["held", "released", "refunded", "disputed"]);
+export const messageTypeSchema = z.enum(["text", "image", "video", "audio"]);
+export const agreementStatusSchema = z.enum(["draft", "pending_signature", "signed", "active", "expired"]);
+export const eventTypeSchema = z.enum(["conference", "workshop", "training", "venue_booking", "church_event"]);
 
 export interface User {
   id: string;
@@ -18,11 +23,25 @@ export interface User {
   verified: boolean;
   documentsVerified: boolean;
   deviceId?: string;
+  devices: TrustedDevice[];
   twoFactorEnabled: boolean;
   rewardPoints: number;
   organizationId?: string;
+  trustScore: number;
+  trustLevel: z.infer<typeof trustLevelSchema>;
+  blacklisted: boolean;
+  blacklistReason?: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface TrustedDevice {
+  id: string;
+  deviceId: string;
+  deviceName: string;
+  lastUsed: Date;
+  trusted: boolean;
+  addedAt: Date;
 }
 
 export interface Property {
@@ -57,8 +76,20 @@ export interface Property {
   leads: number;
   rating: number;
   reviewCount: number;
+  qualityScore: number;
+  aiPriceSuggestion?: number;
+  priceCompetitiveness?: "good_deal" | "fair" | "overpriced";
+  neighborhoodData?: NeighborhoodData;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface NeighborhoodData {
+  schools: { name: string; distance: number; rating?: number }[];
+  hospitals: { name: string; distance: number; type: string }[];
+  transport: { type: string; name: string; distance: number }[];
+  safetyRating: number;
+  noiseLevel: "quiet" | "moderate" | "busy";
 }
 
 export interface Booking {
@@ -188,11 +219,28 @@ export interface Payment {
 
 export interface Message {
   id: string;
+  conversationId: string;
   senderId: string;
   receiverId: string;
   propertyId?: string;
+  bookingId?: string;
+  type: z.infer<typeof messageTypeSchema>;
   content: string;
+  mediaUrl?: string;
   read: boolean;
+  delivered: boolean;
+  createdAt: Date;
+}
+
+export interface Conversation {
+  id: string;
+  participants: string[];
+  propertyId?: string;
+  bookingId?: string;
+  lastMessage?: string;
+  lastMessageAt: Date;
+  unreadCount: Record<string, number>;
+  typing: string[];
   createdAt: Date;
 }
 
@@ -204,4 +252,109 @@ export interface Analytics {
   bookings: number;
   revenue: number;
   leads: number;
+}
+
+export interface TrustScore {
+  userId: string;
+  score: number;
+  level: z.infer<typeof trustLevelSchema>;
+  factors: {
+    verifiedDocuments: number;
+    completedBookings: number;
+    responseTime: number;
+    cancellationRate: number;
+    reviewScore: number;
+    disputeHistory: number;
+  };
+  lastCalculated: Date;
+}
+
+export interface EscrowPayment {
+  id: string;
+  bookingId: string;
+  payerId: string;
+  payeeId: string;
+  amount: number;
+  currency: string;
+  status: z.infer<typeof escrowStatusSchema>;
+  heldAt: Date;
+  releaseScheduledAt?: Date;
+  releasedAt?: Date;
+  disputeReason?: string;
+  disputedAt?: Date;
+  metadata?: Record<string, unknown>;
+}
+
+export interface DigitalAgreement {
+  id: string;
+  type: "rental" | "booking" | "service";
+  bookingId?: string;
+  propertyId?: string;
+  parties: { userId: string; role: string; signed: boolean; signedAt?: Date }[];
+  status: z.infer<typeof agreementStatusSchema>;
+  documentUrl: string;
+  terms: Record<string, unknown>;
+  createdAt: Date;
+  expiresAt?: Date;
+}
+
+export interface TenantProfile {
+  userId: string;
+  pastStays: number;
+  avgRating: number;
+  paymentReliability: number;
+  reviewCount: number;
+  cancellationRate: number;
+  lastStayDate?: Date;
+  issues: { type: string; date: Date; resolved: boolean }[];
+}
+
+export interface Event {
+  id: string;
+  organizerId: string;
+  venueId?: string;
+  type: z.infer<typeof eventTypeSchema>;
+  title: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  location: {
+    address: string;
+    lat: number;
+    lng: number;
+  };
+  capacity: number;
+  ticketPrice: number;
+  currency: string;
+  images: string[];
+  ticketsSold: number;
+  status: "draft" | "published" | "ongoing" | "completed" | "cancelled";
+  createdAt: Date;
+}
+
+export interface EventTicket {
+  id: string;
+  eventId: string;
+  userId: string;
+  qrCode: string;
+  purchaseDate: Date;
+  checkInDate?: Date;
+  status: "valid" | "used" | "cancelled" | "refunded";
+  escrowPaymentId?: string;
+}
+
+export interface RentInvoice {
+  id: string;
+  tenantId: string;
+  landlordId: string;
+  propertyId: string;
+  month: string;
+  amount: number;
+  currency: string;
+  dueDate: Date;
+  paidDate?: Date;
+  lateFee?: number;
+  status: "pending" | "paid" | "overdue" | "partial";
+  partialPayments: { amount: number; date: Date }[];
+  generatedAt: Date;
 }
