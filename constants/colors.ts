@@ -20,9 +20,9 @@ const colorScheme = {
     borderLight: '#F1F5F9',
     tabIconDefault: '#94A3B8',
     tabIconSelected: tintColorLight,
-    icon: '#64748B',
     shadow: 'rgba(0, 0, 0, 0.1)',
     overlay: 'rgba(0, 0, 0, 0.5)',
+    icon: '#64748B',
   },
   dark: {
     text: '#F1F5F9',
@@ -42,9 +42,9 @@ const colorScheme = {
     borderLight: '#1E293B',
     tabIconDefault: '#64748B',
     tabIconSelected: tintColorDark,
-    icon: '#94A3B8',
     shadow: 'rgba(0, 0, 0, 0.3)',
     overlay: 'rgba(0, 0, 0, 0.7)',
+    icon: '#94A3B8',
   },
 };
 
