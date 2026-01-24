@@ -46,42 +46,6 @@ import { listPaymentsProcedure } from "./routes/payments/list";
 import { createMessageProcedure } from "./routes/messages/create";
 import { listMessagesProcedure } from "./routes/messages/list";
 
-import { calculateTrustScoreProcedure } from "./routes/trust/calculate";
-import { getTrustScoreProcedure } from "./routes/trust/get";
-
-import { listConversationsProcedure } from "./routes/conversations/list";
-import { sendMessageProcedure } from "./routes/conversations/send-message";
-import { getMessagesProcedure } from "./routes/conversations/get-messages";
-
-import { createEscrowProcedure } from "./routes/escrow/create";
-import { releaseEscrowProcedure } from "./routes/escrow/release";
-import { disputeEscrowProcedure } from "./routes/escrow/dispute";
-import { listEscrowProcedure } from "./routes/escrow/list";
-
-import { createAgreementProcedure } from "./routes/agreements/create";
-import { signAgreementProcedure } from "./routes/agreements/sign";
-import { listAgreementsProcedure } from "./routes/agreements/list";
-
-import { listDevicesProcedure } from "./routes/devices/list";
-import { addDeviceProcedure } from "./routes/devices/add";
-import { removeDeviceProcedure } from "./routes/devices/remove";
-
-import { getAIPricingProcedure } from "./routes/ai/pricing";
-import { getBestPostingTimeProcedure } from "./routes/ai/best-posting-time";
-
-import { calculateQualityScoreProcedure } from "./routes/quality/calculate";
-
-import { getNeighborhoodDataProcedure } from "./routes/neighborhood/get";
-
-import { generateInvoiceProcedure } from "./routes/billing/generate-invoice";
-import { listInvoicesProcedure } from "./routes/billing/list-invoices";
-
-import { getTenantProfileProcedure } from "./routes/tenants/get-profile";
-
-import { createEventProcedure } from "./routes/events/create";
-import { listEventsProcedure } from "./routes/events/list";
-import { purchaseTicketProcedure } from "./routes/events/purchase-ticket";
-
 export const appRouter = createTRPCRouter({
   auth: createTRPCRouter({
     login: loginProcedure,
@@ -153,64 +117,6 @@ export const appRouter = createTRPCRouter({
   messages: createTRPCRouter({
     create: createMessageProcedure,
     list: listMessagesProcedure,
-  }),
-  
-  trust: createTRPCRouter({
-    calculate: calculateTrustScoreProcedure,
-    get: getTrustScoreProcedure,
-  }),
-  
-  conversations: createTRPCRouter({
-    list: listConversationsProcedure,
-    sendMessage: sendMessageProcedure,
-    getMessages: getMessagesProcedure,
-  }),
-  
-  escrow: createTRPCRouter({
-    create: createEscrowProcedure,
-    release: releaseEscrowProcedure,
-    dispute: disputeEscrowProcedure,
-    list: listEscrowProcedure,
-  }),
-  
-  agreements: createTRPCRouter({
-    create: createAgreementProcedure,
-    sign: signAgreementProcedure,
-    list: listAgreementsProcedure,
-  }),
-  
-  devices: createTRPCRouter({
-    list: listDevicesProcedure,
-    add: addDeviceProcedure,
-    remove: removeDeviceProcedure,
-  }),
-  
-  ai: createTRPCRouter({
-    pricing: getAIPricingProcedure,
-    bestPostingTime: getBestPostingTimeProcedure,
-  }),
-  
-  quality: createTRPCRouter({
-    calculate: calculateQualityScoreProcedure,
-  }),
-  
-  neighborhood: createTRPCRouter({
-    get: getNeighborhoodDataProcedure,
-  }),
-  
-  billing: createTRPCRouter({
-    generateInvoice: generateInvoiceProcedure,
-    listInvoices: listInvoicesProcedure,
-  }),
-  
-  tenants: createTRPCRouter({
-    getProfile: getTenantProfileProcedure,
-  }),
-  
-  events: createTRPCRouter({
-    create: createEventProcedure,
-    list: listEventsProcedure,
-    purchaseTicket: purchaseTicketProcedure,
   }),
 });
 

@@ -27,12 +27,8 @@ class MockDatabase {
       role: "user",
       verified: true,
       documentsVerified: false,
-      devices: [],
       twoFactorEnabled: false,
       rewardPoints: 150,
-      trustScore: 85,
-      trustLevel: "verified",
-      blacklisted: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -72,7 +68,6 @@ class MockDatabase {
       leads: 15,
       rating: 4.5,
       reviewCount: 12,
-      qualityScore: 85,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
