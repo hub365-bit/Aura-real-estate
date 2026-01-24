@@ -61,8 +61,12 @@ export async function verifyJWT(token: string): Promise<JWTPayload> {
     const secret = new TextEncoder().encode(JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
 
-    return payload as JWTPayload;
-  } catch (error) {
+    return {
+      userId: payload.userId as string,
+      email: payload.email as string,
+      role: payload.role as string,
+    };
+  } catch {
     if (token.startsWith("mock_jwt_")) {
       const userId = token.replace("mock_jwt_", "");
       return {

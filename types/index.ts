@@ -55,9 +55,9 @@ export interface QualityScore {
 }
 
 export interface NeighborhoodInfo {
-  schools: Array<{ name: string; distance: number; rating: number }>;
-  hospitals: Array<{ name: string; distance: number; type: string }>;
-  transport: Array<{ type: string; name: string; distance: number }>;
+  schools: { name: string; distance: number; rating: number }[];
+  hospitals: { name: string; distance: number; type: string }[];
+  transport: { type: string; name: string; distance: number }[];
   safetyRating: number;
   noiseLevel: 'low' | 'medium' | 'high';
   activityLevel: 'quiet' | 'moderate' | 'busy';
@@ -105,6 +105,7 @@ export interface Property {
   boosted: boolean;
   createdAt: string;
   updatedAt: string;
+  trustScore?: TrustScore;
   qualityScore?: QualityScore;
   neighborhoodInfo?: NeighborhoodInfo;
   priceIntelligence?: PriceIntelligence;
@@ -284,7 +285,7 @@ export interface Agreement {
   type: 'rental' | 'booking' | 'service';
   bookingId?: string;
   propertyId?: string;
-  parties: Array<{ userId: string; name: string; role: string; signed: boolean; signedAt?: string }>;
+  parties: { userId: string; name: string; role: string; signed: boolean; signedAt?: string }[];
   content: string;
   pdfUrl?: string;
   status: 'draft' | 'pending' | 'signed' | 'expired';

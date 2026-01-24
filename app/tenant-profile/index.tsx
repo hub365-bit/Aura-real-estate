@@ -5,11 +5,10 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack, router } from 'expo-router';
-import { Star, MapPin, CheckCircle, XCircle, DollarSign, Calendar } from 'lucide-react-native';
+import { Stack } from 'expo-router';
+import { Star, CheckCircle, XCircle, DollarSign, Calendar } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 import { useApp } from '@/contexts/AppContext';
 

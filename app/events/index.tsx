@@ -78,7 +78,7 @@ export default function EventsScreen() {
     return (
       <TouchableOpacity
         style={styles.eventCard}
-        onPress={() => router.push(`/events/${item.id}`)}
+        onPress={() => router.push(`/events/${item.id}` as any)}
         activeOpacity={0.7}
       >
         <Image source={{ uri: item.images[0] }} style={styles.eventImage} />

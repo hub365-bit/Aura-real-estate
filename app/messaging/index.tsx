@@ -53,7 +53,7 @@ export default function MessagingScreen() {
   const renderConversation = ({ item }: { item: MockConversation }) => (
     <TouchableOpacity
       style={styles.conversationItem}
-      onPress={() => router.push(`/messaging/${item.id}`)}
+      onPress={() => router.push(`/messaging/${item.id}` as any)}
       activeOpacity={0.7}
     >
       <Image

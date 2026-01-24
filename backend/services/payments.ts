@@ -109,7 +109,7 @@ export async function createStripePayment(params: {
 
   try {
     const Stripe = (await import("stripe")).default;
-    const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
+    const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-10-29.clover" });
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.ceil(params.amount * 100),
@@ -283,13 +283,13 @@ export async function verifyStripePayment(paymentIntentId: string): Promise<{ ve
 
   try {
     const Stripe = (await import("stripe")).default;
-    const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
+    const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-10-29.clover" });
 
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     if (paymentIntent.status === "succeeded") {
       return { verified: true, status: "completed" };
-    } else if (paymentIntent.status === "canceled" || paymentIntent.status === "payment_failed") {
+    } else if (paymentIntent.status === "canceled" || paymentIntent.status === "requires_payment_method") {
       return { verified: false, status: "failed" };
     } else {
       return { verified: false, status: "failed" };
@@ -337,7 +337,7 @@ export async function refundPayment(
 
     try {
       const Stripe = (await import("stripe")).default;
-      const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" });
+      const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2025-10-29.clover" });
 
       const refund = await stripe.refunds.create({
         payment_intent: transactionId,
