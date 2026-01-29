@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Search, Car, Users, Briefcase, Star, CheckCircle } from 'lucide-react-native';
+import { ArrowLeft, Search, Users, Briefcase, Star, CheckCircle } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 import { Transport, TransportType } from '@/types';
 import { useCurrencyConverter } from '@/contexts/TouristContext';

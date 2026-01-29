@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Search, MapPin, Star, Clock, Users, Award } from 'lucide-react-native';
+import { ArrowLeft, Search, Star, Clock, Users, Award } from 'lucide-react-native';
 import Colors from '@/constants/colors';
-import { Experience, TourType } from '@/types';
+import { Experience } from '@/types';
 import { useCurrencyConverter } from '@/contexts/TouristContext';
 
 const MOCK_EXPERIENCES: Experience[] = [

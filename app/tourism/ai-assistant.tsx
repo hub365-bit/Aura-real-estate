@@ -13,7 +13,7 @@ export default function AIAssistantScreen() {
   const { profile } = useTourist();
   const [input, setInput] = useState('');
 
-  const { messages, error, sendMessage, isLoading } = useRorkAgent({
+  const { messages, error, sendMessage } = useRorkAgent({
     tools: {
       searchExperiences: createRorkTool({
         description: 'Search for tours and experiences based on user preferences',
@@ -22,7 +22,7 @@ export default function AIAssistantScreen() {
           location: z.string().describe('Location to search in'),
         }),
         execute(input) {
-          return { message: `Found experiences in ${input.location} for ${input.type} tours` };
+          return `Found experiences in ${input.location} for ${input.type} tours`;
         },
       }),
       bookingAssistance: createRorkTool({
@@ -32,7 +32,7 @@ export default function AIAssistantScreen() {
           details: z.string().describe('Booking details'),
         }),
         execute(input) {
-          return { message: `I can help you book a ${input.bookingType}. ${input.details}` };
+          return `I can help you book a ${input.bookingType}. ${input.details}`;
         },
       }),
       currencyConversion: createRorkTool({
@@ -43,17 +43,21 @@ export default function AIAssistantScreen() {
           toCurrency: z.string().describe('Target currency'),
         }),
         execute(input) {
-          return { message: `${input.amount} ${input.fromCurrency} is approximately ${input.amount * 1.1} ${input.toCurrency}` };
+          return `${input.amount} ${input.fromCurrency} is approximately ${input.amount * 1.1} ${input.toCurrency}`;
         },
       }),
     },
   });
 
+  const [isGenerating, setIsGenerating] = React.useState(false);
+
   const handleSend = () => {
     if (!input.trim()) return;
+    setIsGenerating(true);
     const context = `User is from ${profile.nationality}, interested in: ${profile.interests.join(', ')}, traveling as ${profile.groupType}, prefers ${profile.preferredCurrency}`;
     sendMessage(`${context}\n\nUser question: ${input}`);
     setInput('');
+    setTimeout(() => setIsGenerating(false), 1000);
   };
 
   const QUICK_QUESTIONS = [
@@ -90,7 +94,7 @@ export default function AIAssistantScreen() {
               </View>
               <Text style={styles.welcomeTitle}>Hello, Traveler! 👋</Text>
               <Text style={styles.welcomeText}>
-                I'm your AI travel assistant. Ask me anything about traveling in Kenya and Africa!
+                I&apos;m your AI travel assistant. Ask me anything about traveling in Kenya and Africa!
               </Text>
               <View style={styles.quickQuestions}>
                 <Text style={styles.quickQuestionsTitle}>Quick questions:</Text>
@@ -159,7 +163,7 @@ export default function AIAssistantScreen() {
             </View>
           ))}
 
-          {isLoading && (
+          {isGenerating && (
             <View style={styles.loadingContainer}>
               <View style={styles.loadingDot} />
               <View style={styles.loadingDot} />
@@ -187,7 +191,7 @@ export default function AIAssistantScreen() {
           <TouchableOpacity
             style={[styles.sendButton, !input.trim() && styles.sendButtonDisabled]}
             onPress={handleSend}
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isGenerating}
           >
             <Send size={20} color="#fff" />
           </TouchableOpacity>

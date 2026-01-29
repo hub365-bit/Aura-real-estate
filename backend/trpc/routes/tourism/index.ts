@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { publicProcedure, router } from '../../create-context';
+import { publicProcedure, createTRPCRouter } from '../../create-context';
 
-export const tourismRouter = router({
+export const tourismRouter = createTRPCRouter({
   getTourGuides: publicProcedure
     .input(z.object({
       location: z.string().optional(),

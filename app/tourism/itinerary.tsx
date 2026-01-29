@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { 
@@ -94,7 +94,6 @@ const ITEM_TYPE_ICONS = {
 export default function ItineraryScreen() {
   const router = useRouter();
   const [itinerary] = useState<Itinerary>(MOCK_ITINERARY);
-  const [showAddModal, setShowAddModal] = useState(false);
 
   const groupItemsByDate = () => {
     const grouped: { [key: string]: ItineraryItem[] } = {};
@@ -203,7 +202,7 @@ export default function ItineraryScreen() {
           </View>
         ))}
 
-        <TouchableOpacity style={styles.addButton} onPress={() => setShowAddModal(true)}>
+        <TouchableOpacity style={styles.addButton}>
           <Plus size={20} color={Colors.light.primary} />
           <Text style={styles.addButtonText}>Add Activity</Text>
         </TouchableOpacity>

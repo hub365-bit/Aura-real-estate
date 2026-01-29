@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Search, MapPin, Star, Award, Languages, Calendar } from 'lucide-react-native';
+import { ArrowLeft, Search, MapPin, Star, Award, Languages } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 import { TourGuide, TourType } from '@/types';
 import { useCurrencyConverter } from '@/contexts/TouristContext';
@@ -133,7 +133,7 @@ export default function TourGuidesScreen() {
           <TouchableOpacity
             key={guide.id}
             style={styles.guideCard}
-            onPress={() => router.push(`/tourism/guide/${guide.id}`)}
+            onPress={() => router.push(`/tourism/guide/${guide.id}` as any)}
           >
             <Image source={{ uri: guide.avatar }} style={styles.avatar} />
             <View style={styles.guideInfo}>

@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { 
-  Plane, 
   Map, 
   Compass, 
   Car, 
@@ -114,7 +113,7 @@ export default function TourismHub() {
               style={styles.featureCard}
               onPress={() => router.push(feature.route as any)}
             >
-              <LinearGradient colors={feature.gradient} style={styles.featureGradient}>
+              <LinearGradient colors={feature.gradient as [string, string]} style={styles.featureGradient}>
                 <feature.icon size={32} color="#fff" />
               </LinearGradient>
               <Text style={styles.featureTitle}>{feature.title}</Text>

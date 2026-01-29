@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ArrowLeft, Check, Globe, Calendar, Heart, Users } from 'lucide-react-native';
+import { ArrowLeft, Check, Globe, Calendar, Users } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 import { useTourist } from '@/contexts/TouristContext';
 import { TouristInterest, GroupType, Currency } from '@/types';
@@ -73,7 +73,7 @@ export default function TouristOnboarding() {
     <View style={styles.stepContainer}>
       <Text style={styles.stepTitle}>Welcome, Explorer! 🌍</Text>
       <Text style={styles.stepDescription}>
-        Let's personalize your travel experience in Africa
+        Let&apos;s personalize your travel experience in Africa
       </Text>
 
       <View style={styles.inputGroup}>
