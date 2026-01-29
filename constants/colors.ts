@@ -22,7 +22,6 @@ const colorScheme = {
     tabIconSelected: tintColorLight,
     shadow: 'rgba(0, 0, 0, 0.1)',
     overlay: 'rgba(0, 0, 0, 0.5)',
-    icon: '#64748B',
   },
   dark: {
     text: '#F1F5F9',
@@ -44,7 +43,6 @@ const colorScheme = {
     tabIconSelected: tintColorDark,
     shadow: 'rgba(0, 0, 0, 0.3)',
     overlay: 'rgba(0, 0, 0, 0.7)',
-    icon: '#94A3B8',
   },
 };
 

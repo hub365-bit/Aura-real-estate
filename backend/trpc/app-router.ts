@@ -76,6 +76,8 @@ import { createEventProcedure } from "./routes/events/create";
 import { listEventsProcedure } from "./routes/events/list";
 import { bookEventTicketProcedure } from "./routes/events/book-ticket";
 
+import { tourismRouter } from "./routes/tourism/index";
+
 export const appRouter = createTRPCRouter({
   auth: createTRPCRouter({
     login: loginProcedure,
@@ -199,6 +201,8 @@ export const appRouter = createTRPCRouter({
     list: listEventsProcedure,
     bookTicket: bookEventTicketProcedure,
   }),
+  
+  tourism: tourismRouter,
 });
 
 export type AppRouter = typeof appRouter;

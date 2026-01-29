@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider } from "@/contexts/AppContext";
+import { TouristProvider } from "@/contexts/TouristContext";
 import { trpc, trpcClient } from "@/lib/trpc";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { logger } from "@/lib/logger";
@@ -48,6 +49,16 @@ function RootLayoutNav() {
       <Stack.Screen name="listings/ai-generator" options={{ headerShown: false }} />
       <Stack.Screen name="support/chatbot" options={{ headerShown: false }} />
       <Stack.Screen name="referrals/index" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/onboarding" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/index" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/guides" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/guide/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/experiences" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/experience/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/transport" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/itinerary" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/cultural-guide" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/ai-assistant" options={{ headerShown: false }} />
     </Stack>
   );
 }
@@ -69,9 +80,11 @@ export default function RootLayout() {
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <GestureHandlerRootView style={styles.container}>
-            <AppProvider>
-              <RootLayoutNav />
-            </AppProvider>
+            <TouristProvider>
+              <AppProvider>
+                <RootLayoutNav />
+              </AppProvider>
+            </TouristProvider>
           </GestureHandlerRootView>
         </QueryClientProvider>
       </trpc.Provider>

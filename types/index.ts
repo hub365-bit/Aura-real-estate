@@ -1,4 +1,4 @@
-export type UserRole = 'user' | 'agent' | 'landlord' | 'hotel' | 'service_provider' | 'admin';
+export type UserRole = 'user' | 'agent' | 'landlord' | 'hotel' | 'service_provider' | 'admin' | 'tour_guide' | 'tourist';
 
 export type PropertyType = 'house' | 'apartment' | 'office' | 'land' | 'commercial';
 export type ListingCategory = 'rental' | 'sale' | 'hospitality' | 'service';
@@ -355,4 +355,235 @@ export interface FilterOptions {
   searchQuery?: string;
   trustLevel?: TrustLevel;
   qualityScoreMin?: number;
+}
+
+export type TouristInterest = 'safari' | 'beach' | 'culture' | 'food' | 'nightlife' | 'adventure' | 'wellness' | 'photography';
+export type GroupType = 'solo' | 'couple' | 'family' | 'group';
+export type Currency = 'USD' | 'EUR' | 'GBP' | 'KES' | 'TZS' | 'UGX';
+
+export interface TouristProfile {
+  userId: string;
+  touristMode: boolean;
+  nationality: string;
+  preferredLanguage: string;
+  travelDates?: { start: string; end: string };
+  interests: TouristInterest[];
+  groupType: GroupType;
+  preferredCurrency: Currency;
+  travelHistory: string[];
+}
+
+export interface HotelFilters {
+  airportPickup?: boolean;
+  breakfastIncluded?: boolean;
+  wifiQuality?: 'basic' | 'good' | 'excellent';
+  powerBackup?: boolean;
+  ecoFriendly?: boolean;
+  familyFriendly?: boolean;
+  coupleFriendly?: boolean;
+  accessibilityOptions?: boolean;
+}
+
+export type RoomTag = 'ocean_view' | 'balcony' | 'quiet' | 'honeymoon' | 'work_friendly';
+
+export interface Room {
+  id: string;
+  hotelId: string;
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  images: string[];
+  capacity: number;
+  bedrooms: number;
+  bathrooms: number;
+  tags: RoomTag[];
+  amenities: string[];
+  available: boolean;
+}
+
+export interface TourGuide {
+  id: string;
+  userId: string;
+  name: string;
+  avatar?: string;
+  verifiedId: boolean;
+  tourismLicense?: string;
+  languages: string[];
+  expertise: string[];
+  yearsExperience: number;
+  rating: number;
+  reviewsCount: number;
+  trustScore: TrustScore;
+  bio: string;
+  location: string;
+  priceRange: { min: number; max: number; currency: string };
+}
+
+export type TourType = 'city' | 'safari' | 'hiking' | 'cultural' | 'food' | 'nightlife' | 'multi_day';
+export type BookingOption = 'private' | 'group' | 'custom';
+
+export interface Experience {
+  id: string;
+  guideId: string;
+  guideName: string;
+  guideAvatar?: string;
+  title: string;
+  description: string;
+  type: TourType;
+  duration: number;
+  durationUnit: 'hours' | 'days';
+  location: {
+    name: string;
+    city: string;
+    country: string;
+    lat: number;
+    lng: number;
+  };
+  images: string[];
+  videos?: string[];
+  price: number;
+  currency: string;
+  maxGroupSize: number;
+  bookingOptions: BookingOption[];
+  included: string[];
+  excluded: string[];
+  cancellationPolicy: string;
+  rating: number;
+  reviewsCount: number;
+  languages: string[];
+  difficulty?: 'easy' | 'moderate' | 'challenging';
+  trustScore?: TrustScore;
+}
+
+export type TransportType = 'airport_pickup' | 'car_hire' | 'tour_van' | 'boda' | 'tuk_tuk';
+
+export interface Transport {
+  id: string;
+  providerId: string;
+  providerName: string;
+  type: TransportType;
+  vehicleType: string;
+  driverName: string;
+  driverRating: number;
+  luggageCapacity: number;
+  passengerCapacity: number;
+  price: number;
+  currency: string;
+  pricePerKm?: number;
+  images: string[];
+  amenities: string[];
+  availability: boolean;
+}
+
+export interface TransportBooking {
+  id: string;
+  transportId: string;
+  userId: string;
+  pickupLocation: string;
+  dropoffLocation: string;
+  pickupTime: string;
+  passengers: number;
+  luggage: number;
+  status: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled';
+  totalAmount: number;
+  currency: string;
+  driverPhone?: string;
+  vehicleDetails?: string;
+}
+
+export interface ItineraryItem {
+  id: string;
+  type: 'hotel' | 'experience' | 'transport' | 'restaurant' | 'custom';
+  title: string;
+  description?: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  location: {
+    name: string;
+    address: string;
+    lat: number;
+    lng: number;
+  };
+  bookingId?: string;
+  cost?: number;
+  currency?: string;
+  notes?: string;
+}
+
+export interface Itinerary {
+  id: string;
+  userId: string;
+  title: string;
+  destination: string;
+  startDate: string;
+  endDate: string;
+  items: ItineraryItem[];
+  totalBudget?: number;
+  currency: string;
+  shared: boolean;
+  collaborators?: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CulturalInfo {
+  location: string;
+  country: string;
+  customsAndEtiquette: string[];
+  dressCode: string;
+  safetyTips: string[];
+  emergencyContacts: { name: string; number: string }[];
+  simCardProviders: { name: string; coverage: string; plans: string }[];
+  internetAvailability: string;
+  tippingCulture: string;
+  localPhrases: { phrase: string; translation: string; pronunciation: string }[];
+  bestTimeToVisit: string;
+  healthRequirements: string[];
+}
+
+export interface TravelerMoment {
+  id: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  verifiedTraveler: boolean;
+  experienceId?: string;
+  hotelId?: string;
+  location: string;
+  media: string[];
+  caption: string;
+  rating?: number;
+  likes: number;
+  createdAt: string;
+}
+
+export interface PriceConversion {
+  amount: number;
+  fromCurrency: Currency;
+  conversions: { currency: Currency; amount: number; rate: number }[];
+  lastUpdated: string;
+}
+
+export interface TourismInsurance {
+  id: string;
+  name: string;
+  provider: string;
+  coverage: string[];
+  price: number;
+  currency: string;
+  maxCoverage: number;
+  duration: number;
+  durationUnit: 'days' | 'weeks';
+}
+
+export interface SavedSearch {
+  id: string;
+  userId: string;
+  type: 'property' | 'hotel' | 'experience' | 'service';
+  filters: any;
+  alertsEnabled: boolean;
+  name: string;
+  createdAt: string;
 }
