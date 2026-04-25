@@ -10,7 +10,12 @@ import {
   Calendar, 
   Globe, 
   Sparkles,
-  MessageSquare 
+  MessageSquare,
+  Hotel,
+  Camera,
+  Shield,
+  Award,
+  Users
 } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 import { useTourist } from '@/contexts/TouristContext';
@@ -21,11 +26,18 @@ export default function TourismHub() {
 
   const features = [
     {
+      icon: Hotel,
+      title: 'Hotels',
+      description: 'Stays & accommodations',
+      route: '/tourism/hotels',
+      gradient: ['#0891B2', '#22D3EE'],
+    },
+    {
       icon: Compass,
       title: 'Tour Guides',
       description: 'Expert local guides',
       route: '/tourism/guides',
-      gradient: ['#0891B2', '#22D3EE'],
+      gradient: ['#0D9488', '#2DD4BF'],
     },
     {
       icon: Map,
@@ -61,6 +73,34 @@ export default function TourismHub() {
       description: 'Travel help & tips',
       route: '/tourism/ai-assistant',
       gradient: ['#EF4444', '#F87171'],
+    },
+    {
+      icon: Camera,
+      title: 'Moments',
+      description: 'Traveler stories & reels',
+      route: '/tourism/traveler-moments',
+      gradient: ['#6366F1', '#818CF8'],
+    },
+    {
+      icon: Shield,
+      title: 'Protection',
+      description: 'Insurance & support',
+      route: '/tourism/insurance',
+      gradient: ['#14B8A6', '#5EEAD4'],
+    },
+    {
+      icon: Award,
+      title: 'Post-Trip',
+      description: 'Reviews & rewards',
+      route: '/tourism/post-trip',
+      gradient: ['#D946EF', '#E879F9'],
+    },
+    {
+      icon: Users,
+      title: 'Partners',
+      description: 'Official tourism partners',
+      route: '/tourism/partners',
+      gradient: ['#F97316', '#FB923C'],
     },
   ];
 

@@ -253,14 +253,14 @@ export default function FiltersModal({
               <TouchableOpacity
                 style={[
                   styles.numberChip,
-                  bedrooms && bedrooms > 5 && styles.numberChipActive,
+                  bedrooms !== undefined && bedrooms > 5 && styles.numberChipActive,
                 ]}
-                onPress={() => setBedrooms(bedrooms && bedrooms > 5 ? undefined : 6)}
+                onPress={() => setBedrooms(bedrooms !== undefined && bedrooms > 5 ? undefined : 6)}
               >
                 <Text
                   style={[
                     styles.numberText,
-                    bedrooms && bedrooms > 5 && styles.numberTextActive,
+                    bedrooms !== undefined && bedrooms > 5 && styles.numberTextActive,
                   ]}
                 >
                   5+
@@ -297,14 +297,14 @@ export default function FiltersModal({
               <TouchableOpacity
                 style={[
                   styles.numberChip,
-                  bathrooms && bathrooms > 4 && styles.numberChipActive,
+                  bathrooms !== undefined && bathrooms > 4 && styles.numberChipActive,
                 ]}
-                onPress={() => setBathrooms(bathrooms && bathrooms > 4 ? undefined : 5)}
+                onPress={() => setBathrooms(bathrooms !== undefined && bathrooms > 4 ? undefined : 5)}
               >
                 <Text
                   style={[
                     styles.numberText,
-                    bathrooms && bathrooms > 4 && styles.numberTextActive,
+                    bathrooms !== undefined && bathrooms > 4 && styles.numberTextActive,
                   ]}
                 >
                   4+

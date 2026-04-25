@@ -6,6 +6,7 @@ import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider } from "@/contexts/AppContext";
 import { TouristProvider } from "@/contexts/TouristContext";
+import { OfflineProvider } from "@/contexts/OfflineContext";
 import { trpc, trpcClient } from "@/lib/trpc";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { logger } from "@/lib/logger";
@@ -59,6 +60,13 @@ function RootLayoutNav() {
       <Stack.Screen name="tourism/itinerary" options={{ headerShown: false }} />
       <Stack.Screen name="tourism/cultural-guide" options={{ headerShown: false }} />
       <Stack.Screen name="tourism/ai-assistant" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/hotels" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/traveler-moments" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/insurance" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/post-trip" options={{ headerShown: false }} />
+      <Stack.Screen name="tourism/partners" options={{ headerShown: false }} />
+      <Stack.Screen name="compare/index" options={{ headerShown: false }} />
+      <Stack.Screen name="saved-searches/index" options={{ headerShown: false }} />
     </Stack>
   );
 }
@@ -81,9 +89,11 @@ export default function RootLayout() {
         <QueryClientProvider client={queryClient}>
           <GestureHandlerRootView style={styles.container}>
             <TouristProvider>
-              <AppProvider>
-                <RootLayoutNav />
-              </AppProvider>
+              <OfflineProvider>
+                <AppProvider>
+                  <RootLayoutNav />
+                </AppProvider>
+              </OfflineProvider>
             </TouristProvider>
           </GestureHandlerRootView>
         </QueryClientProvider>

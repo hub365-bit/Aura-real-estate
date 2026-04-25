@@ -136,4 +136,71 @@ export const tourismRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return { bookingId: 'new-booking-id' };
     }),
+
+  getHotels: publicProcedure
+    .input(z.object({
+      location: z.string().optional(),
+      airportPickup: z.boolean().optional(),
+      breakfastIncluded: z.boolean().optional(),
+      powerBackup: z.boolean().optional(),
+      ecoFriendly: z.boolean().optional(),
+      familyFriendly: z.boolean().optional(),
+      coupleFriendly: z.boolean().optional(),
+      accessibilityOptions: z.boolean().optional(),
+    }))
+    .query(async ({ input }) => {
+      return { hotels: [], total: 0 };
+    }),
+
+  getTravelerMoments: publicProcedure
+    .input(z.object({
+      location: z.string().optional(),
+      experienceId: z.string().optional(),
+      hotelId: z.string().optional(),
+    }))
+    .query(async ({ input }) => {
+      return { moments: [], total: 0 };
+    }),
+
+  createTravelerMoment: publicProcedure
+    .input(z.object({
+      userId: z.string(),
+      location: z.string(),
+      media: z.array(z.string()),
+      caption: z.string(),
+      experienceId: z.string().optional(),
+      hotelId: z.string().optional(),
+    }))
+    .mutation(async ({ input }) => {
+      return { id: 'new-moment-id' };
+    }),
+
+  getInsurancePlans: publicProcedure
+    .query(async () => {
+      return { plans: [] };
+    }),
+
+  getPartners: publicProcedure
+    .input(z.object({
+      type: z.enum(['national_park', 'museum', 'tourism_board', 'operator']).optional(),
+    }))
+    .query(async ({ input }) => {
+      return { partners: [], total: 0 };
+    }),
+
+  getLoyaltyRewards: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input }) => {
+      return { points: 0, rewards: [], tier: 'bronze' };
+    }),
+
+  addLoyaltyPoints: publicProcedure
+    .input(z.object({
+      userId: z.string(),
+      points: z.number(),
+      reason: z.string(),
+    }))
+    .mutation(async ({ input }) => {
+      return { success: true, newTotal: input.points };
+    }),
 });

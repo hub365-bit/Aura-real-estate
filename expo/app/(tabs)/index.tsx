@@ -11,11 +11,12 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { Search, SlidersHorizontal, MapPin, Heart, Star } from 'lucide-react-native';
+import { Search, SlidersHorizontal, MapPin, Heart, Star, Mic, GitCompare, Bookmark } from 'lucide-react-native';
 import { useApp } from '@/contexts/AppContext';
 import Colors from '@/constants/colors';
 import { Property, FilterOptions } from '@/types';
 import FiltersModal from '@/app/modals/filters';
+import VoiceSearch from '@/components/VoiceSearch';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 48) / 2;
@@ -28,6 +29,7 @@ export default function PropertiesScreen() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'rental' | 'sale'>('all');
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [advancedFilters, setAdvancedFilters] = useState<FilterOptions>({});
+  const [showVoiceSearch, setShowVoiceSearch] = useState(false);
 
   const filters = useMemo<FilterOptions>(() => {
     const base: FilterOptions = {
@@ -71,12 +73,26 @@ export default function PropertiesScreen() {
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
+          <TouchableOpacity onPress={() => setShowVoiceSearch(true)}>
+            <Mic size={20} color={Colors.light.primary} />
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setShowFilters(!showFilters)}
         >
           <SlidersHorizontal size={20} color={Colors.light.primary} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.quickActions}>
+        <TouchableOpacity style={styles.quickAction} onPress={() => router.push('/compare/index' as any)}>
+          <GitCompare size={18} color={Colors.light.primary} />
+          <Text style={styles.quickActionText}>Compare</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickAction} onPress={() => router.push('/saved-searches/index' as any)}>
+          <Bookmark size={18} color={Colors.light.primary} />
+          <Text style={styles.quickActionText}>Saved</Text>
         </TouchableOpacity>
       </View>
 
@@ -198,6 +214,13 @@ export default function PropertiesScreen() {
         initialFilters={filters}
         onApplyFilters={handleApplyFilters}
       />
+
+      {showVoiceSearch && (
+        <VoiceSearch
+          onResult={(text) => { setSearchQuery(text); setShowVoiceSearch(false); }}
+          onClose={() => setShowVoiceSearch(false)}
+        />
+      )}
     </View>
   );
 }
@@ -225,8 +248,30 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     paddingHorizontal: 20,
-    marginBottom: 16,
+    marginBottom: 12,
     gap: 12,
+  },
+  quickActions: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    marginBottom: 12,
+    gap: 10,
+  },
+  quickAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: Colors.light.surface,
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
+  },
+  quickActionText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.light.primary,
   },
   searchBar: {
     flex: 1,

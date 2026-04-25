@@ -10,9 +10,9 @@ import { Stack, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Check } from 'lucide-react-native';
 import {
-  supportedLanguages,
-  getCurrentLanguage,
-  setStoredLanguage,
+  supportedLocales,
+  getLocale,
+  setLocale,
 } from '@/lib/i18n';
 import Colors from '@/constants/colors';
 
@@ -29,12 +29,12 @@ export default function LanguageSettingsScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
 
   useEffect(() => {
-    setSelectedLanguage(getCurrentLanguage());
+    setSelectedLanguage(getLocale());
   }, []);
 
-  const handleLanguageSelect = async (languageCode: string) => {
+  const handleLanguageSelect = (languageCode: string) => {
     setSelectedLanguage(languageCode);
-    await setStoredLanguage(languageCode);
+    setLocale(languageCode);
   };
 
   return (
@@ -58,7 +58,7 @@ export default function LanguageSettingsScreen() {
         </Text>
 
         <View style={styles.languageList}>
-          {supportedLanguages.map((language) => (
+          {supportedLocales.map((language: { code: string; name: string; flag: string }) => (
             <TouchableOpacity
               key={language.code}
               style={[
@@ -70,7 +70,7 @@ export default function LanguageSettingsScreen() {
             >
               <View style={styles.languageInfo}>
                 <Text style={styles.languageName}>{language.name}</Text>
-                <Text style={styles.languageNative}>{language.nativeName}</Text>
+                <Text style={styles.languageNative}>{language.flag}</Text>
               </View>
               {selectedLanguage === language.code && (
                 <Check size={24} color={COLORS.primary} />

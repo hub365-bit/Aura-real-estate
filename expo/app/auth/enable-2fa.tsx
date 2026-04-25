@@ -58,7 +58,7 @@ export default function Enable2FA() {
       </View>
       <Text style={styles.title}>Enable Two-Factor Authentication</Text>
       <Text style={styles.description}>
-        Add an extra layer of security to your account. You'll need to enter a
+        Add an extra layer of security to your account. You&apos;ll need to enter a
         code from your authenticator app each time you log in.
       </Text>
 
@@ -130,7 +130,7 @@ export default function Enable2FA() {
           1. Open your authenticator app
         </Text>
         <Text style={styles.instructionText}>
-          2. Tap "+" or "Add Account"
+          2. Tap &quot;+&quot; or &quot;Add Account&quot;
         </Text>
         <Text style={styles.instructionText}>
           3. Scan the QR code or enter the key
@@ -144,7 +144,7 @@ export default function Enable2FA() {
         style={styles.primaryButton}
         onPress={() => setStep('verify')}
       >
-        <Text style={styles.primaryButtonText}>I've Scanned the Code</Text>
+        <Text style={styles.primaryButtonText}>I&apos;ve Scanned the Code</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
