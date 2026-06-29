@@ -170,9 +170,9 @@ struct PropertyDetailView: View {
         VStack(alignment: .leading, spacing: 10) {
             Label("Neighborhood", systemImage: "building.2.fill")
                 .font(.headline)
-            ForEach(n.schools, id: \.name) { row(icon: "graduationcap.fill", $0.name, "\($0.distance, specifier: "%.1f") km") }
-            ForEach(n.hospitals, id: \.name) { row(icon: "cross.case.fill", $0.name, "\($0.distance, specifier: "%.1f") km") }
-            ForEach(n.transport, id: \.name) { row(icon: "bus.fill", $0.name, "\($0.distance, specifier: "%.1f") km") }
+            ForEach(n.schools, id: \.name) { row(icon: "graduationcap.fill", $0.name, String(format: "%.1f km", $0.distance)) }
+            ForEach(n.hospitals, id: \.name) { row(icon: "cross.case.fill", $0.name, String(format: "%.1f km", $0.distance)) }
+            ForEach(n.transport, id: \.name) { row(icon: "bus.fill", $0.name, String(format: "%.1f km", $0.distance)) }
             HStack {
                 Label("Safety \(n.safetyRating, specifier: "%.1f")/5", systemImage: "shield.fill")
                 Spacer()
